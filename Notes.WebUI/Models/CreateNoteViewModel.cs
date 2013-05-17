@@ -15,6 +15,10 @@ namespace Notes.WebUI.Models
         public string Data { get; set; }
 
         public IEnumerable<SelectListItem> NoteType { get; set; }
+        
+        [Required]
+        [HiddenInput(DisplayValue = false)]
+        public int IdNoteType { get; set; }
 
         public NoteStatus NoteStatus { get; set; }
     }

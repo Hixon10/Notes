@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
 namespace Notes.Domain.Entities
 {
+    [Table("NoteStatus", Schema = "dbo")]
     public class NoteStatus
     {
         [Key, HiddenInput(DisplayValue = false)]

@@ -14,11 +14,11 @@
 
         <div class="editor-field">
             @Html.DropDownListFor(
-             m => m.NoteType,
+             m => m.IdNoteType,
                 @Model.NoteType)
             
-            @Html.ValidationMessageFor(model => model.NoteType)
+            @Html.ValidationMessageFor(model => model.IdNoteType)
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Save" />
+        <input class="btn btn-primary" type="submit" value="Сохранить" />
 }

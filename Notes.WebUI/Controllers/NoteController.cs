@@ -45,9 +45,11 @@ namespace Notes.WebUI.Controllers
         {
             var noteViewModel = new CreateNoteViewModel();
 
-            var selectList = unitOfWork.NoteStatusRepository.Get().Select(x => new SelectListItem
+            var a = unitOfWork.NoteTypeRepository.GetByID(1);
+
+            var selectList = unitOfWork.NoteTypeRepository.Get().Select(x => new SelectListItem
             {
-                Text = x.Status,
+                Text = x.Type,
                 Value = x.Id.ToString()
             }).ToList();
 
@@ -61,18 +63,24 @@ namespace Notes.WebUI.Controllers
         // POST: /Node/Create
 
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(CreateNoteViewModel createNoteViewModel)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            Note note = new Note();
+            note.Data = createNoteViewModel.Data;
+            note.NoteStatus = createNoteViewModel.NoteStatus;
+            note.NoteType = unitOfWork.NoteTypeRepository.GetByID(createNoteViewModel.IdNoteType);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
+            note.User = user;
+
+            if (ModelState.IsValid)
             {
-                return View();
+                unitOfWork.NoteRepository.Insert(note);
+                unitOfWork.Save();
+                TempData["message"] = "Элемент успешно добавлен!";
             }
+
+            return View();
         }
         
         //

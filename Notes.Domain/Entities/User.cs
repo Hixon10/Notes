@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 
 namespace Notes.Domain.Entities
 {
+    [Table("User", Schema = "dbo")]
     public class User
     {
         [Key, HiddenInput(DisplayValue = false)]

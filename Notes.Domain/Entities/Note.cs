@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Notes.Domain.Entities
 {
+    [Table("Note", Schema = "dbo")]
     public class Note
     {
         [Key, HiddenInput(DisplayValue = false)]
