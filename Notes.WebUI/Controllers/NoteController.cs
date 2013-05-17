@@ -3,17 +3,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Notes.Domain.DAL;
+using Notes.Domain.Entities;
+using Notes.WebUI.Models;
 
 namespace Notes.WebUI.Controllers
 {
-    public class NodeController : Controller
+    public class NoteController : Controller
     {
-        //
-        // GET: /Node/
+        private readonly UnituOfWork unitOfWork;
 
-        public ActionResult Index()
+        public NoteController(UnituOfWork unitOfWork)
         {
-            return View();
+            this.unitOfWork = unitOfWork;
+        }
+
+        public ActionResult List()
+        {
+            var notes = new List<Note>
+                {
+                    new Note {Data = "Какой-то текст, который требуется вывести<br>fawerfaerg", NoteStatus = null, NoteType = null, User = null},
+                    new Note {Data = "Какой-то текст, которыwefwefй требуется вывести<br>fawerfaerg", NoteStatus = null, NoteType = null, User = null}
+                };
+
+
+            return View(notes);
         }
 
         //
@@ -27,9 +41,20 @@ namespace Notes.WebUI.Controllers
         //
         // GET: /Node/Create
 
-        public ActionResult Create()
+        public PartialViewResult Create()
         {
-            return View();
+            var noteViewModel = new CreateNoteViewModel();
+
+            var selectList = unitOfWork.NoteStatusRepository.Get().Select(x => new SelectListItem
+            {
+                Text = x.Status,
+                Value = x.Id.ToString()
+            }).ToList();
+
+            noteViewModel.NoteType = selectList;
+            noteViewModel.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(2);
+
+            return PartialView(noteViewModel);
         } 
 
         //
@@ -77,18 +102,18 @@ namespace Notes.WebUI.Controllers
         }
 
         //
-        // GET: /Node/Delete/5
+        // GET: /Node/ChangeNodeStatusToHistory/5
  
-        public ActionResult Delete(int id)
+        public ActionResult ChangeNodeStatusToHistory(int id)
         {
             return View();
         }
 
         //
-        // POST: /Node/Delete/5
+        // POST: /Node/ChangeNodeStatusToHistory/5
 
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public ActionResult ChangeNodeStatusToHistory(int id, FormCollection collection)
         {
             try
             {

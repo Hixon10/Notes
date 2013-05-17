@@ -1,0 +1,34 @@
+﻿@model List<Notes.Domain.Entities.Note>
+
+@{
+    ViewBag.Title = "Список заметок";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ Html.RenderAction("Create", "Note");}
+
+<table class="table table-striped">
+  <thead>
+      <tr>
+      <th>Замтека</th>
+      <th>Команда</th>
+    </tr>
+  </thead>
+  <tbody  data-provides="rowlink">
+@foreach (var note in Model)
+{
+    <tr>
+      <td>
+         @note.Data
+      </td>
+        <td>
+            @using (Html.BeginForm("ChangeNodeStatusToHistory", "Node", FormMethod.Post, new { @class = "form-change-node-status-to-history" }))
+            {
+                @Html.Hidden("id", note.Id)
+                <input class="btn btn-danger" type="submit" value="В историю"/>
+            }
+        </td>
+    </tr>
+}
+  </tbody>
+</table>

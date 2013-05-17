@@ -1,0 +1,24 @@
+﻿@model Notes.WebUI.Models.CreateNoteViewModel
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Data, "Заметка")
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Data)
+            @Html.ValidationMessageFor(model => model.Data)
+        </div>
+
+        <div class="editor-field">
+            @Html.DropDownListFor(
+             m => m.NoteType,
+                @Model.NoteType)
+            
+            @Html.ValidationMessageFor(model => model.NoteType)
+        </div>
+
+        <input class="btn btn-primary" type="submit" value="Save" />
+}
