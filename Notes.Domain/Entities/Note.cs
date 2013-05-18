@@ -17,10 +17,19 @@ namespace Notes.Domain.Entities
         [Required(ErrorMessage = "Data обязателен.")]
         public string Data { get; set; }
 
+        [Required(ErrorMessage = "IdNoteType is required.")]
+        public int IdNoteType { get; set; }
+        [ForeignKey("IdNoteType")]
         public virtual NoteType NoteType { get; set; }
 
+        [Required(ErrorMessage = "IdNoteStatus is required.")]
+        public int IdNoteStatus { get; set; }
+        [ForeignKey("IdNoteStatus")]
         public virtual NoteStatus NoteStatus { get; set; }
 
+        [Required(ErrorMessage = "IdUser is required.")]
+        public int IdUser { get; set; }
+        [ForeignKey("IdUser")]
         public virtual User User { get; set; }
     }
 }

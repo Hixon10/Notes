@@ -63,11 +63,12 @@ namespace Notes.WebUI.Controllers
         // POST: /Node/Create
 
         [HttpPost]
-        public ActionResult Create(CreateNoteViewModel createNoteViewModel)
+        public String Create(CreateNoteViewModel createNoteViewModel)
         {
             Note note = new Note();
             note.Data = createNoteViewModel.Data;
-            note.NoteStatus = createNoteViewModel.NoteStatus;
+            //note.NoteStatus = createNoteViewModel.NoteStatus;
+            note.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(1);
             note.NoteType = unitOfWork.NoteTypeRepository.GetByID(createNoteViewModel.IdNoteType);
 
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
@@ -78,9 +79,10 @@ namespace Notes.WebUI.Controllers
                 unitOfWork.NoteRepository.Insert(note);
                 unitOfWork.Save();
                 TempData["message"] = "Элемент успешно добавлен!";
+                return "succes";
             }
 
-            return View();
+            return "fail";
         }
         
         //
