@@ -20,6 +20,6 @@ namespace Notes.WebUI.Models
         [HiddenInput(DisplayValue = false)]
         public int IdNoteType { get; set; }
 
-        public NoteStatus NoteStatus { get; set; }
+        //public NoteStatus NoteStatus { get; set; }
     }
 }

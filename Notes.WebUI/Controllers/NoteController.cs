@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Json;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Notes.Domain.DAL;
@@ -41,7 +44,7 @@ namespace Notes.WebUI.Controllers
         //
         // GET: /Node/Create
 
-        public PartialViewResult Create()
+        public PartialViewResult GetFormForCreate()
         {
             var noteViewModel = new CreateNoteViewModel();
 
@@ -54,7 +57,6 @@ namespace Notes.WebUI.Controllers
             }).ToList();
 
             noteViewModel.NoteType = selectList;
-            noteViewModel.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(2);
 
             return PartialView(noteViewModel);
         } 
@@ -63,26 +65,49 @@ namespace Notes.WebUI.Controllers
         // POST: /Node/Create
 
         [HttpPost]
-        public String Create(CreateNoteViewModel createNoteViewModel)
+        public String Create(String data, int idNoteType)
         {
+            //CreateNoteViewModel createNoteViewModel = this.Deserialise<CreateNoteViewModel>(viewModel);
+            CreateNoteViewModel createNoteViewModel = new CreateNoteViewModel();
+            createNoteViewModel.Data = data;
+            createNoteViewModel.IdNoteType = idNoteType;
+
             Note note = new Note();
             note.Data = createNoteViewModel.Data;
-            //note.NoteStatus = createNoteViewModel.NoteStatus;
-            note.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(1);
+            note.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(2);
             note.NoteType = unitOfWork.NoteTypeRepository.GetByID(createNoteViewModel.IdNoteType);
 
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
             note.User = user;
 
+            String statusMessage;
+            String jsonString;
+            var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+
             if (ModelState.IsValid)
             {
                 unitOfWork.NoteRepository.Insert(note);
                 unitOfWork.Save();
-                TempData["message"] = "Элемент успешно добавлен!";
-                return "succes";
+
+                statusMessage = "success";
+
+                jsonString = scriptSerializer.Serialize(new {status = statusMessage});
+                return jsonString;
             }
 
-            return "fail";
+            statusMessage = "fail";
+
+            jsonString = scriptSerializer.Serialize(new { status = statusMessage });
+            return jsonString;
+        }
+
+        private T Deserialise<T>(string json)
+        {
+            using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
+            {
+                var serialiser = new DataContractJsonSerializer(typeof(T));
+                return (T)serialiser.ReadObject(ms);
+            }
         }
         
         //

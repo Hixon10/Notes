@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{ Html.RenderAction("Create", "Note");}
+@{ Html.RenderAction("GetFormForCreate", "Note");}
 
 <table class="table table-striped">
   <thead>
@@ -22,7 +22,7 @@
          @note.Data
       </td>
         <td>
-            @using (Html.BeginForm("ChangeNodeStatusToHistory", "Node", FormMethod.Post, new { @class = "form-change-node-status-to-history" }))
+            @using (Html.BeginForm("ChangeNodeStatusToHistory", "Note", FormMethod.Post, new { @class = "form-change-node-status-to-history" }))
             {
                 @Html.Hidden("id", note.Id)
                 <input class="btn btn-danger" type="submit" value="В историю"/>

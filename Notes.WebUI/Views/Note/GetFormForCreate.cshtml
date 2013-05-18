@@ -1,6 +1,6 @@
 ﻿@model Notes.WebUI.Models.CreateNoteViewModel
 
-@using (Html.BeginForm())
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-create-note", Action = "/Note/Create" }))
 {
     @Html.ValidationSummary(true)
 
@@ -20,5 +20,5 @@
             @Html.ValidationMessageFor(model => model.IdNoteType)
         </div>
 
-        <input class="btn btn-primary" type="submit" value="Сохранить" />
+        <input id="button-create-note" class="btn btn-primary" type="submit" value="Сохранить" />
 }
