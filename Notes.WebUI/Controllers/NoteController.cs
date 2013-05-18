@@ -23,12 +23,9 @@ namespace Notes.WebUI.Controllers
 
         public ActionResult List()
         {
-            var notes = new List<Note>
-                {
-                    new Note {Data = "Какой-то текст, который требуется вывести<br>fawerfaerg", NoteStatus = null, NoteType = null, User = null},
-                    new Note {Data = "Какой-то текст, которыwefwefй требуется вывести<br>fawerfaerg", NoteStatus = null, NoteType = null, User = null}
-                };
+            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
 
+            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 2);
 
             return View(notes);
         }
@@ -67,7 +64,6 @@ namespace Notes.WebUI.Controllers
         [HttpPost]
         public String Create(String data, int idNoteType)
         {
-            //CreateNoteViewModel createNoteViewModel = this.Deserialise<CreateNoteViewModel>(viewModel);
             CreateNoteViewModel createNoteViewModel = new CreateNoteViewModel();
             createNoteViewModel.Data = data;
             createNoteViewModel.IdNoteType = idNoteType;

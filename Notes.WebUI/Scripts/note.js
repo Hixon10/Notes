@@ -51,6 +51,7 @@ $(document).ready(
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'POST',
+                dataType: 'json',
                 data: { "data": data, "idNoteType": idNoteType },
                 success: function (result) {
                     // TODO:
