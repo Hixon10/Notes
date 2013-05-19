@@ -17,7 +17,12 @@ $(document).ready(
                 dataType: 'json',
                 data: { "data": data, "idNoteType": idNoteType },
                 success: function (result) {
-                    // TODO:
+                    if (result.status == "success") {
+                        var tr = '<tr><td>' + result.data + '</td><td><form method="post" class="form-change-node-status-to-history" action="/Note/ChangeNodeStatusToHistory" novalidate="novalidate"><input type="hidden" value="' + result.idNote + '" name="idNote" class="idNote"><input type="submit" value="В историю" class="btn btn-danger"></form></td></tr>';
+                        $('table.table-striped tr:last').after(tr);
+                    } else {
+                        alert("Ошибка добавления заметки!");
+                    }
                 },
                 complete: function () {
                     $('input#button-create-note').removeAttr('disabled');
@@ -26,7 +31,7 @@ $(document).ready(
         }
         );
 
-        $('form.form-change-node-status-to-history').on('submit', function (e) {
+        $(document).on('submit', 'form.form-change-node-status-to-history', function (e) {
             e.preventDefault();
 
             var form = $(this).parent();

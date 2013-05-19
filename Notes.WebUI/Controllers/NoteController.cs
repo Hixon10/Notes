@@ -90,8 +90,11 @@ namespace Notes.WebUI.Controllers
                 unitOfWork.Save();
 
                 statusMessage = "success";
+                String noteData = note.Data;
+                String noteType = note.NoteType.Type;
+                int idNote = note.Id;
 
-                jsonString = scriptSerializer.Serialize(new {status = statusMessage});
+                jsonString = scriptSerializer.Serialize(new { status = statusMessage, data = noteData, noteType = noteType, idNote = idNote });
                 return jsonString;
             }
 
