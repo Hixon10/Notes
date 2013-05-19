@@ -11,6 +11,8 @@ $(document).ready(
             var data = $("textarea#Data").val();
             var idNoteType = $("select#IdNoteType :selected").val();
 
+            $("#add-note-errors").html("");
+
             $.ajax({
                 url: $(this).attr('action'),
                 type: 'POST',
@@ -18,9 +20,25 @@ $(document).ready(
                 data: { "data": data, "idNoteType": idNoteType },
                 success: function (result) {
                     if (result.status == "success") {
-                        var tr = '<tr><td>' + result.data + '</td><td><form method="post" class="form-change-node-status-to-history" action="/Note/ChangeNodeStatusToHistory" novalidate="novalidate"><input type="hidden" value="' + result.idNote + '" name="idNote" class="idNote"><input type="submit" value="В историю" class="btn btn-danger"></form></td></tr>';
+                        var content = "";
+                        if ($.trim(result.noteType) == "link") {
+                            content = "<a href=\"" + result.data + "\">" + result.data + "</a>";
+                        } else {
+                            content = result.data;
+                        }
+
+                        var tr = '<tr><td>' + content + '</td><td><form method="post" class="form-change-node-status-to-history" action="/Note/ChangeNodeStatusToHistory" novalidate="novalidate"><input type="hidden" value="' + result.idNote + '" name="idNote" class="idNote"><input type="submit" value="В историю" class="btn btn-danger"></form></td></tr>';
                         $('table.table-striped tr:last').after(tr);
+                        $("textarea#Data").val("");
                     } else {
+                        var errors = "<ul>";
+                        $(result.errors[0].Errors).each(function (index, element) {
+                            errors += "<li>";
+                            errors += element.ErrorMessage
+                            errors += "</li>";
+                        });
+                        errors += "</ul>";
+                        $("#add-note-errors").html(errors);
                         alert("Ошибка добавления заметки!");
                     }
                 },

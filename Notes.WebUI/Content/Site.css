@@ -75,3 +75,7 @@ textarea
 {
     display: none;
 }
+
+#add-note-errors {
+    color: red;
+}

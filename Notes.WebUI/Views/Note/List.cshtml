@@ -14,13 +14,20 @@
       <th>Команда</th>
     </tr>
   </thead>
-  <tbody  data-provides="rowlink">
+  <tbody>
 @foreach (var note in Model)
 {
     <tr>
-      <td>
-         @note.Data
-      </td>
+        <td>
+          @if (note.IdNoteType == 2)
+          {
+              <a href="@note.Data">@note.Data</a>
+          }
+          else
+          {
+              @note.Data
+          }
+        </td>
         <td>
             @using (Html.BeginForm("ChangeNodeStatusToHistory", "Note", FormMethod.Post, new { @class = "form-change-node-status-to-history" }))
             {

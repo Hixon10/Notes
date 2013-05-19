@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.Serialization.Json;
@@ -68,6 +70,10 @@ namespace Notes.WebUI.Controllers
         [HttpPost]
         public String Create(String data, int idNoteType)
         {
+            String statusMessage;
+            String jsonString;
+            var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+
             CreateNoteViewModel createNoteViewModel = new CreateNoteViewModel();
             createNoteViewModel.Data = data;
             createNoteViewModel.IdNoteType = idNoteType;
@@ -79,15 +85,41 @@ namespace Notes.WebUI.Controllers
 
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
             note.User = user;
+            
+            try
+            {
+                ValidateModel(note);
 
-            String statusMessage;
-            String jsonString;
-            var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+            }
+            catch (Exception e)
+            {
+                statusMessage = "fail";
+                var errors = ModelState
+                            .Where(x => x.Value.Errors.Count > 0)
+                            .Select(x => new { x.Key, x.Value.Errors })
+                            .ToArray();
+
+                jsonString = scriptSerializer.Serialize(new { status = statusMessage, errors = errors });
+                return jsonString;
+            }
 
             if (ModelState.IsValid)
             {
                 unitOfWork.NoteRepository.Insert(note);
-                unitOfWork.Save();
+                try
+                {
+                    unitOfWork.Save();
+                }
+                catch (DbEntityValidationException dbEx)
+                {
+                    foreach (var validationErrors in dbEx.EntityValidationErrors)
+                    {
+                        foreach (var validationError in validationErrors.ValidationErrors)
+                        {
+                            Trace.TraceInformation("Property: {0} Error: {1}", validationError.PropertyName, validationError.ErrorMessage);
+                        }
+                    }
+                }
 
                 statusMessage = "success";
                 String noteData = note.Data;
@@ -146,7 +178,7 @@ namespace Notes.WebUI.Controllers
             //TODO get real user
             var user = unitOfWork.UserRepository.GetByID(1);
 
-            IEnumerable<Note> notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id);
+            IEnumerable<Note> notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 1);
 
             if (notes.Any())
             {

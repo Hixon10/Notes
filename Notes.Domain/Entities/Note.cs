@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Web.Mvc;
+using Notes.Domain.Validation;
 
 namespace Notes.Domain.Entities
 {
@@ -15,6 +16,7 @@ namespace Notes.Domain.Entities
         public int Id { get; private set; }
 
         [Required(ErrorMessage = "Data обязателен.")]
+        [MinLengthOrNull(1)]
         public string Data { get; set; }
 
         [Required(ErrorMessage = "IdNoteType is required.")]
