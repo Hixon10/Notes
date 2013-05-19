@@ -25,7 +25,7 @@ namespace Notes.WebUI
             routes.MapRoute(
                 "Default", // Route name
                 "{controller}/{action}/{id}", // URL with parameters
-                new { controller = "Note", action = "List", id = UrlParameter.Optional } // Parameter defaults
+                new { controller = "Login", action = "ViewAuthFrom", id = UrlParameter.Optional } // Parameter defaults
             );
 
         }

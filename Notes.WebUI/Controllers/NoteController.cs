@@ -23,6 +23,7 @@ namespace Notes.WebUI.Controllers
             this.unitOfWork = unitOfWork;
         }
 
+        [Authorize]
         public ActionResult List()
         {
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
@@ -32,6 +33,7 @@ namespace Notes.WebUI.Controllers
             return View(notes);
         }
 
+        [Authorize]
         public ActionResult HistoryNotesList()
         {
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
@@ -44,6 +46,7 @@ namespace Notes.WebUI.Controllers
         //
         // GET: /Node/Create
 
+        [Authorize]
         public PartialViewResult GetFormForCreate()
         {
             var noteViewModel = new CreateNoteViewModel();
@@ -67,6 +70,7 @@ namespace Notes.WebUI.Controllers
         //
         // POST: /Node/Create
 
+        [Authorize]
         [HttpPost]
         public String Create(String data, int idNoteType)
         {
@@ -139,6 +143,7 @@ namespace Notes.WebUI.Controllers
 
         // POST: /Node/ChangeNodeStatusToHistory/5
 
+        [Authorize]
         [HttpPost]
         public String ChangeNodeStatusToHistory(int idNote)
         {
@@ -169,6 +174,7 @@ namespace Notes.WebUI.Controllers
             return jsonString;
         }
 
+        [Authorize]
         public String ClearHistoryNotes()
         {
             String statusMessage;

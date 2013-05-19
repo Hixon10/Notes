@@ -1,0 +1,32 @@
+﻿@model Notes.WebUI.Models.AuthUserViewModel
+
+@{
+    ViewBag.Title = "ViewAuthFrom";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td>
+                @Html.TextBoxFor(x => x.Login)
+                @Html.ValidationMessageFor(x => x.Login)
+            </td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>
+                @Html.PasswordFor(x => x.Password)
+                @Html.ValidationMessageFor(x => x.Password)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">@Html.ActionLink("Зарегистрироваться?", "Index", "Registration")</td>
+        </tr>
+    </table>
+    <input type="submit" value="Вход" />
+}

@@ -1,0 +1,42 @@
+﻿@model Notes.WebUI.Models.RegistrationUserViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary()
+    <table>
+        <tr>
+            <td>Login:</td>
+            <td>
+                @Html.TextBoxFor(x => x.Login)
+                @Html.ValidationMessageFor(x => x.Login)
+            </td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td>
+                @Html.PasswordFor(x => x.Password)
+                @Html.ValidationMessageFor(x => x.Password)
+            </td>
+        </tr>
+        <tr>
+            <td>Confirm Password:</td>
+            <td>
+                @Html.PasswordFor(x => x.ConfirmPassword)
+                @Html.ValidationMessageFor(x => x.Password)
+            </td>
+        </tr>
+        <tr>
+            <td>E-mail:</td>
+            <td>
+                @Html.TextBoxFor(x => x.Email)
+                @Html.ValidationMessageFor(x => x.Email)
+            </td>
+        </tr>
+    </table>
+    <input type="submit" value="Регистрация" />
+}
