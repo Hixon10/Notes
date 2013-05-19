@@ -47,23 +47,13 @@
                     @Html.ActionLink(
                         linkText: "Published notes",
                         actionName: "List",
-                        controllerName: "Note",
-                        routeValues: new {
-                            idNoteStatus = 2
-                        },
-                        htmlAttributes: null
-                        )
+                        controllerName: "Note")
                 </li>
                 <li>
                     @Html.ActionLink(
                         linkText: "History notes",
-                        actionName: "List",
-                        controllerName: "Note",
-                        routeValues: new {
-                            idNoteStatus = 1
-                        },
-                        htmlAttributes: null
-                    )
+                        actionName: "HistoryNotesList",
+                        controllerName: "Note")
                 </li>
             </ul>
           </div><!--/.well -->

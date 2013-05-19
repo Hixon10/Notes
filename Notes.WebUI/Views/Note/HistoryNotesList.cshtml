@@ -1,0 +1,26 @@
+﻿@model IEnumerable<Notes.Domain.Entities.Note>
+
+@{
+    ViewBag.Title = "Список заметок в истории";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{Html.RenderAction("GetFormForClearHistoryNotes", "Note");}
+
+<table class="table table-striped">
+  <thead>
+      <tr>
+      <th>Замтека</th>
+    </tr>
+  </thead>
+  <tbody  data-provides="rowlink">
+@foreach (var note in Model)
+{
+    <tr>
+      <td>
+         @note.Data
+      </td>
+    </tr>
+}
+  </tbody>
+</table>

@@ -46,7 +46,24 @@ $(document).ready(
                     }
                 }
             });
+        }
+        );
 
+        $('form#form-clear-history-note').on('submit', function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: $(this).attr('action'),
+                type: 'POST',
+                dataType: 'json',
+                success: function (result) {
+                    if (result.status == "success") {
+                        $("table.table-striped").find("tr").remove();
+                    } else {
+                        alert("Заметок в истории нет!");
+                    }
+                }
+            });
         }
         );
     }

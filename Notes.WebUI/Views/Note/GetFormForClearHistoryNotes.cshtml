@@ -1,0 +1,6 @@
+﻿@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "form-clear-history-note", Action = "/Note/ClearHistoryNotes" }))
+{
+    @Html.ValidationSummary(true)
+
+        <input id="button-clear-history-notes" class="btn btn-danger" type="submit" value="Удалить заметки из истории" />
+}

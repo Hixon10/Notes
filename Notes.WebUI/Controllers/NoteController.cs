@@ -21,17 +21,23 @@ namespace Notes.WebUI.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public ActionResult List(int idNoteStatus = 2)
+        public ActionResult List()
         {
-            if (idNoteStatus != 1 && idNoteStatus != 2) idNoteStatus = 2;
-
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
 
-            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == idNoteStatus);
+            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 2);
 
             return View(notes);
         }
 
+        public ActionResult HistoryNotesList()
+        {
+            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
+
+            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 1);
+
+            return View(notes);
+        }
 
         //
         // GET: /Node/Create
@@ -50,6 +56,11 @@ namespace Notes.WebUI.Controllers
 
             return PartialView(noteViewModel);
         } 
+
+        public PartialViewResult GetFormForClearHistoryNotes()
+        {
+            return PartialView();
+        }
 
         //
         // POST: /Node/Create
@@ -109,6 +120,37 @@ namespace Notes.WebUI.Controllers
             {
                 note.IdNoteStatus = 1;
                 unitOfWork.NoteRepository.Update(note);
+                unitOfWork.Save();
+
+                statusMessage = "success";
+
+                jsonString = scriptSerializer.Serialize(new { status = statusMessage });
+                return jsonString;
+            }
+
+            statusMessage = "fail";
+
+            jsonString = scriptSerializer.Serialize(new { status = statusMessage });
+            return jsonString;
+        }
+
+        public String ClearHistoryNotes()
+        {
+            String statusMessage;
+            String jsonString;
+            var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            //TODO get real user
+            var user = unitOfWork.UserRepository.GetByID(1);
+
+            IEnumerable<Note> notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id);
+
+            if (notes.Any())
+            {
+                foreach (var note in notes)
+                {
+                    unitOfWork.NoteRepository.Delete(note);
+                }
                 unitOfWork.Save();
 
                 statusMessage = "success";
