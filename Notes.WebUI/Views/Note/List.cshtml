@@ -24,7 +24,7 @@
         <td>
             @using (Html.BeginForm("ChangeNodeStatusToHistory", "Note", FormMethod.Post, new { @class = "form-change-node-status-to-history" }))
             {
-                @Html.Hidden("id", note.Id)
+                <input type="hidden" class="idNote" name="idNote" value="@note.Id" />
                 <input class="btn btn-danger" type="submit" value="В историю"/>
             }
         </td>

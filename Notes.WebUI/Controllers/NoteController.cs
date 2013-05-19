@@ -32,13 +32,6 @@ namespace Notes.WebUI.Controllers
             return View(notes);
         }
 
-        //
-        // GET: /Node/Details/5
-
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         //
         // GET: /Node/Create
@@ -46,8 +39,6 @@ namespace Notes.WebUI.Controllers
         public PartialViewResult GetFormForCreate()
         {
             var noteViewModel = new CreateNoteViewModel();
-
-            var a = unitOfWork.NoteTypeRepository.GetByID(1);
 
             var selectList = unitOfWork.NoteTypeRepository.Get().Select(x => new SelectListItem
             {
@@ -99,65 +90,37 @@ namespace Notes.WebUI.Controllers
             return jsonString;
         }
 
-        private T Deserialise<T>(string json)
-        {
-            using (var ms = new MemoryStream(Encoding.Unicode.GetBytes(json)))
-            {
-                var serialiser = new DataContractJsonSerializer(typeof(T));
-                return (T)serialiser.ReadObject(ms);
-            }
-        }
-        
-        //
-        // GET: /Node/Edit/5
- 
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
 
-        //
-        // POST: /Node/Edit/5
-
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
- 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        //
-        // GET: /Node/ChangeNodeStatusToHistory/5
- 
-        public ActionResult ChangeNodeStatusToHistory(int id)
-        {
-            return View();
-        }
-
-        //
         // POST: /Node/ChangeNodeStatusToHistory/5
 
         [HttpPost]
-        public ActionResult ChangeNodeStatusToHistory(int id, FormCollection collection)
+        public String ChangeNodeStatusToHistory(int idNote)
         {
-            try
+            String statusMessage;
+            String jsonString;
+            var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+
+            //TODO get real user
+            var user = unitOfWork.UserRepository.GetByID(1);
+
+            var note = unitOfWork.NoteRepository.GetByID(idNote);
+
+            if (note.IdUser == user.Id)
             {
-                // TODO: Add delete logic here
- 
-                return RedirectToAction("Index");
+                note.IdNoteStatus = 1;
+                unitOfWork.NoteRepository.Update(note);
+                unitOfWork.Save();
+
+                statusMessage = "success";
+
+                jsonString = scriptSerializer.Serialize(new { status = statusMessage });
+                return jsonString;
             }
-            catch
-            {
-                return View();
-            }
+
+            statusMessage = "fail";
+
+            jsonString = scriptSerializer.Serialize(new { status = statusMessage });
+            return jsonString;
         }
     }
 }
