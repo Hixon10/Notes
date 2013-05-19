@@ -5,6 +5,9 @@ $(document).ready(
             e.preventDefault();
             $('input#button-create-note').attr('disabled', 'disabled');
 
+            var val = $('form#form-create-note').validate();
+            alert(val.showErrors());
+
             /*
             $.ajax(
             {

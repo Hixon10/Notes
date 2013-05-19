@@ -42,9 +42,29 @@
         <div class="span3">
           <div class="well sidebar-nav">
             <ul class="nav nav-list">
-                <li class="nav-header">Название пункта</li>
-                <li><a href="http://yandex.ru">http://yandex.ru</a></li>
-                <li><a href="http://yandex.ru">http://yandex.ru</a></li>
+                <li class="nav-header">Меню</li>
+                <li>
+                    @Html.ActionLink(
+                        linkText: "Published notes",
+                        actionName: "List",
+                        controllerName: "Note",
+                        routeValues: new {
+                            idNoteStatus = 2
+                        },
+                        htmlAttributes: null
+                        )
+                </li>
+                <li>
+                    @Html.ActionLink(
+                        linkText: "History notes",
+                        actionName: "List",
+                        controllerName: "Note",
+                        routeValues: new {
+                            idNoteStatus = 1
+                        },
+                        htmlAttributes: null
+                    )
+                </li>
             </ul>
           </div><!--/.well -->
         </div><!--/span-->

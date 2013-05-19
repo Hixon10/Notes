@@ -21,11 +21,13 @@ namespace Notes.WebUI.Controllers
             this.unitOfWork = unitOfWork;
         }
 
-        public ActionResult List()
+        public ActionResult List(int idNoteStatus = 2)
         {
+            if (idNoteStatus != 1 && idNoteStatus != 2) idNoteStatus = 2;
+
             User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
 
-            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 2);
+            var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == idNoteStatus);
 
             return View(notes);
         }
