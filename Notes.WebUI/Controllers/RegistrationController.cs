@@ -74,14 +74,15 @@ namespace Notes.WebUI.Controllers
                 {
                     unitOfWork.UserRepository.Insert(user);
                     unitOfWork.Save();
-                    return RedirectToAction("List", "Note");
+
+                    LoginController loginController = new LoginController(unitOfWork);
+                    AuthUserViewModel authUserViewModel = new AuthUserViewModel();
+                    authUserViewModel.Login = registrationUserViewModel.Login.Trim();
+                    authUserViewModel.Password = registrationUserViewModel.Password;
+                    return loginController.ViewAuthFrom(authUserViewModel);
                 }
             }
-            /*}
-            catch (DataException e)
-            {
-                ModelState.AddModelError("", "При сохранении возникла ошибка."+e.Message);
-            }*/
+           
             return View();
         }
 

@@ -16,6 +16,7 @@ namespace Notes.Domain.Entities
 
         [StringLength(50, MinimumLength = 6, ErrorMessage = "Длина Email должна быть от 6 до 50 символов!")]
         [Required(ErrorMessage = "Email обязателен.")]
+        [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [StringLength(32, MinimumLength = 3, ErrorMessage = "Длина Login должна быть от 3 до 32 символов!")]

@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+Welcome <strong>@User.Identity.Name</strong>, @Html.ActionLink("Exit", "Logout", "Login")
+
 @{Html.RenderAction("GetFormForClearHistoryNotes", "Note");}
 
 <table class="table table-striped">
@@ -13,14 +15,23 @@
       <th>Замтека</th>
     </tr>
   </thead>
-  <tbody  data-provides="rowlink">
+  <tbody>
 @foreach (var note in Model)
 {
     <tr>
       <td>
-         @note.Data
+          @if (note.IdNoteType == 2)
+          {
+              <a href="@note.Data">@note.Data</a>
+          }
+          else
+          {
+              @note.Data
+          }
       </td>
     </tr>
 }
   </tbody>
 </table>
+
+

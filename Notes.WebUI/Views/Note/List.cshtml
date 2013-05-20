@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+Welcome <strong>@User.Identity.Name</strong>, @Html.ActionLink("Exit", "Logout", "Login")
+
 @{Html.RenderAction("GetFormForCreate", "Note");}
 
 <table class="table table-striped">
@@ -39,5 +41,3 @@
 }
   </tbody>
 </table>
-
-@Html.ActionLink("Exit", "Logout", "Login")

@@ -26,7 +26,9 @@ namespace Notes.WebUI.Controllers
         [Authorize]
         public ActionResult List()
         {
-            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
+            String login = User.Identity.Name;
+
+            User user = unitOfWork.UserRepository.Get().Where(a => a.Login.Trim() == login).FirstOrDefault();
 
             var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 2);
 
@@ -36,7 +38,9 @@ namespace Notes.WebUI.Controllers
         [Authorize]
         public ActionResult HistoryNotesList()
         {
-            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
+            String login = User.Identity.Name;
+
+            User user = unitOfWork.UserRepository.Get().Where(a => a.Login.Trim() == login).FirstOrDefault();
 
             var notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 1);
 
@@ -87,7 +91,9 @@ namespace Notes.WebUI.Controllers
             note.NoteStatus = unitOfWork.NoteStatusRepository.GetByID(2);
             note.NoteType = unitOfWork.NoteTypeRepository.GetByID(createNoteViewModel.IdNoteType);
 
-            User user = unitOfWork.UserRepository.GetByID(1); //TODO get real user
+            String login = User.Identity.Name;
+
+            User user = unitOfWork.UserRepository.Get().Where(a => a.Login.Trim() == login).FirstOrDefault();
             note.User = user;
             
             try
@@ -151,8 +157,9 @@ namespace Notes.WebUI.Controllers
             String jsonString;
             var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            //TODO get real user
-            var user = unitOfWork.UserRepository.GetByID(1);
+            String login = User.Identity.Name;
+
+            User user = unitOfWork.UserRepository.Get().Where(a => a.Login.Trim() == login).FirstOrDefault();
 
             var note = unitOfWork.NoteRepository.GetByID(idNote);
 
@@ -181,8 +188,9 @@ namespace Notes.WebUI.Controllers
             String jsonString;
             var scriptSerializer = new System.Web.Script.Serialization.JavaScriptSerializer();
 
-            //TODO get real user
-            var user = unitOfWork.UserRepository.GetByID(1);
+            String login = User.Identity.Name;
+
+            User user = unitOfWork.UserRepository.Get().Where(a => a.Login.Trim() == login).FirstOrDefault();
 
             IEnumerable<Note> notes = unitOfWork.NoteRepository.Get().Where(a => a.IdUser == user.Id && a.IdNoteStatus == 1);
 

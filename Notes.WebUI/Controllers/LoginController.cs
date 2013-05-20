@@ -76,7 +76,7 @@ namespace Notes.WebUI.Controllers
 
                     if (checkLo == 1 && chekPas == 1)
                     {
-                        FormsAuthentication.SetAuthCookie(user.Login.Trim(), true, Environment.CurrentDirectory + "cookie.txt");
+                        FormsAuthentication.SetAuthCookie(user.Login.Trim(), false);
                         UserName = user.Login.Trim();
                         return RedirectToAction("List", "Note");
                     }

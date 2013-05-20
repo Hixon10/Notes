@@ -79,3 +79,11 @@ textarea
 #add-note-errors {
     color: red;
 }
+
+input#button-clear-history-notes {
+    margin-top: 10px;
+}
+
+input#button-login {
+    margin-top: 6px;
+}
